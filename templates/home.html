@@ -1,0 +1,33 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} Segmentation {% endblock title %}
+
+{% block head %}
+{{ super() }}
+<script src={{ url_for('send_static', path='p5/p5.js') }}></script>
+<script src={{ url_for('send_static', path='p5/p5.dom.js') }}></script>
+<script src={{ url_for('send_static', path='sketch.js') }}></script>
+<script src={{ url_for('send_static', path='jquery-3.4.1.js') }}></script>
+<script src={{ url_for('send_static', path='bootstrap/js/bootstrap.js') }}></script>
+<link href={{ url_for('send_static', path='bootstrap/css/bootstrap.css') }} rel="stylesheet">
+{% endblock head %}
+
+
+{% block content %}
+<div class="container">
+	<h1 class="text-center"> Tongue identification </h1>
+	<blockquote class="blockquote text-muted">
+		Tongue identification using <a href="http://medialab.sjtu.edu.cn/teaching/DIP/Projects/chapter_seg/GraphcutSegmentationSurvey.pdf"> graph-based image segmentation</a> followed by <a href="https://ivrl.epfl.ch/research-2/research-current/research-superpixels/"> simple linear iterative clustering </a>. Drag and drop an image onto the canvas. Scribble the foreground and background and segment. You can iteratively refine the segmentation by adding to the foreground background scribbles. Click 'Save' to download segmentation mask or 'match' to identify.
+	<p class="text-center">
+	</p>
+	<!-- <footer>  Vagdevi </footer> -->
+	</blockquote>
+
+	<div id="canvasHolder" align="center">
+	</div>
+	<div id="fields" align="center">
+	</div>
+
+	
+</div>
+
+{% endblock content %}
