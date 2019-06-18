@@ -1,6 +1,4 @@
-import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from skimage.segmentation import slic
 from skimage.segmentation import mark_boundaries
 from skimage.data import astronaut
@@ -84,35 +82,3 @@ def do_graph_cut(fgbg_hists, fgbg_superpixels, norm_hists, neighbors):
 
     g.maxflow()
     return g.get_grid_segments(nodes)
-
-if __name__ == '__main__':
-    img = img_as_float(astronaut()[::2, ::2])
-    img_marking = cv2.imread("astronaut_marking.png")
-
-    centers, colors_hists, segments, neighbors = superpixels_histograms_neighbors(img)
-    fg_segments, bg_segments = find_superpixels_under_marking(img_marking, segments)
-
-    # get cumulative BG/FG histograms, before normalization
-    fg_cumulative_hist = cumulative_histogram_for_superpixels(fg_segments, colors_hists)
-    bg_cumulative_hist = cumulative_histogram_for_superpixels(bg_segments, colors_hists)
-
-    norm_hists = normalize_histograms(colors_hists)
-
-    graph_cut = do_graph_cut((fg_cumulative_hist, bg_cumulative_hist),
-                             (fg_segments,        bg_segments),
-                             norm_hists,
-                             neighbors)
-
-    plt.subplot(1,2,2), plt.xticks([]), plt.yticks([])
-    plt.title('segmentation')
-    segmask = pixels_for_segment_selection(segments, np.nonzero(graph_cut))
-    cv2.imwrite("output_segmentation.png", np.uint8(segmask * 255))
-    plt.imshow(segmask)
-
-    plt.subplot(1,2,1), plt.xticks([]), plt.yticks([])
-    img = mark_boundaries(img, segments)
-    img[img_marking[:,:,0]!=255] = (1,0,0)
-    img[img_marking[:,:,2]!=255] = (0,0,1)
-    plt.imshow(img)
-    plt.title("SLIC + markings")
-    plt.savefig("segmentation.png",bbox_inches='tight',dpi=96)

@@ -1,7 +1,6 @@
 from flask import Flask, render_template, url_for, request, send_from_directory
 from flask_bootstrap import Bootstrap
 from flask import jsonify
-import time
 import numpy as np
 
 from skimage.segmentation import slic
