@@ -1,6 +1,7 @@
 "use strict";
  
 let original_img, img, g, slic_img, segmented, bg, default_bg, hover, segmask, fname='image';
+
 let drawing_mode = 1, drawing = false;
 
 let show_img = false;
@@ -139,7 +140,7 @@ function segment(){
 	httpPost('segment', 'json', data, got_segmask, failure);
 }
 
-function save_segmask() {
+function save_segmask(){
   let upscaled_segmask = createImage(img.width, img.height);
   upscaled_segmask.copy(segmask, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
   upscaled_segmask.resize(original_img.width, original_img.height);
@@ -185,6 +186,11 @@ function setup() {
   save_segmask_button.parent('fields');
   save_segmask_button.mousePressed(save_segmask);
   save_segmask_button.class('btn btn-info');
+
+  let match_button = createButton('Match');
+  match_button.parent('fields');
+  match_button.mousePressed(match);
+  match_button.class('btn btn-success');
 }
  
 function draw() {
@@ -196,13 +202,13 @@ function draw() {
   else{
   	text('Drag an image file onto this area.', width>>1, height>>1);
   }
-  
   if(show_slic){
     image(slic_img, 0, 0, width, height);
   }
   if(show_segmented){
     image(segmented, 0, 0, width, height);
   }
+  
 
   if(drawing){
     if(drawing_mode == 1){

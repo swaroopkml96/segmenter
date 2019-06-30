@@ -2,12 +2,10 @@ from flask import Flask, render_template, url_for, request, send_from_directory
 from flask_bootstrap import Bootstrap
 from flask import jsonify
 import numpy as np
-from collections import defaultdict
-import os
 
-import skimage
 from skimage.segmentation import slic
 from skimage.segmentation import mark_boundaries
+from skimage.data import astronaut
 from skimage.util import img_as_float
 import maxflow
 from scipy.spatial import Delaunay
@@ -107,7 +105,7 @@ def segment():
             image=image.tolist(),
             segmask=segmask.tolist()
         )
-        return(resp)
+        return(resp) 
 
 
 if __name__ == '__main__':
